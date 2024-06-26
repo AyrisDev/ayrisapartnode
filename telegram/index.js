@@ -1,30 +1,27 @@
 import TelegramBot from "node-telegram-bot-api";
 import dotenv from "dotenv";
-import { handleAddReservation } from "./addReservation.js";
 import { handleAddExpenses, handleExpensesMessage } from "./addExpenses.js";
+import {
+  handleAddReservation,
+  handleReservationMessage,
+} from "./addReservation.js";
 import { handleAddOksana, handleOksanaMessage } from "./addOksana.js";
 import { handleFetchCheckInData } from "./fetchCheckInData.js";
 
 dotenv.config();
 
+const bot = new TelegramBot(process.env.TELEGRAM_API_KEY, { polling: true });
 const sessions = {};
 
 export const startTelegramBot = () => {
-  const bot = new TelegramBot(process.env.TELEGRAM_API_KEY, { polling: true });
-  const webhookUrl = process.env.VERCEL_DEPLOYMENT_URL;
-
   bot.onText(/\/expenses/, (msg) => {
     const chatId = msg.chat.id;
     handleAddExpenses(bot, chatId);
   });
 
   bot.on("message", async (msg) => {
-    const chatId = msg.chat.id;
-    const text = msg.text;
-
-    if (!sessions[chatId]) return;
-
     handleExpensesMessage(bot, msg);
+    handleReservationMessage(bot, msg);
     handleOksanaMessage(bot, msg);
   });
 
@@ -42,7 +39,7 @@ export const startTelegramBot = () => {
       /checkdate - Check available dates for rooms
       /persons - Get the list of persons
       /addreservation - Add a new reservation
-      /expenses - Add a new expenses
+      /expenses - Add a new expense
       /oksana - Add a new Oksana entry
     `;
     bot.sendMessage(msg.chat.id, helpMessage);
@@ -105,5 +102,7 @@ export const startTelegramBot = () => {
     handleFetchCheckInData(bot, chatId);
   });
 
-  bot.setWebHook(`${webhookUrl}/bot${process.env.TELEGRAM_API_KEY}`);
+  bot.setWebHook(
+    `${process.env.VERCEL_DEPLOYMENT_URL}/bot${process.env.TELEGRAM_API_KEY}`
+  );
 };

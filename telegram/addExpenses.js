@@ -1,4 +1,3 @@
-// Telegram/addExpenses.js
 import { addExpenseToNotion } from "../utils/addExpenseToNotion.js";
 
 const sessions = {};
