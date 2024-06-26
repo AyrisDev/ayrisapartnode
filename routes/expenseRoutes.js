@@ -13,8 +13,7 @@ router.post("/add", async (req, res) => {
     );
     res.json({ expenseId });
   } catch (error) {
-    console.error(error);
-    res.status(500).send(error.message);
+    res.status(500).send(`Error adding expense: ${error.message}`);
   }
 });
 

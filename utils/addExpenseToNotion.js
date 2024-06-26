@@ -1,10 +1,10 @@
 import fetch from "node-fetch";
 
-export async function addExpenseToNotion(
+export const addExpenseToNotion = async (
   expense,
   notionApiKey,
   expensesDatabaseId
-) {
+) => {
   const url = "https://api.notion.com/v1/pages";
   const headers = {
     Authorization: `Bearer ${notionApiKey}`,
@@ -22,9 +22,7 @@ export async function addExpenseToNotion(
         number: expense.amount,
       },
       Date: {
-        date: {
-          start: expense.date,
-        },
+        date: { start: expense.date },
       },
       Description: {
         rich_text: [{ text: { content: expense.description } }],
@@ -45,7 +43,6 @@ export async function addExpenseToNotion(
   if (!response.ok) {
     throw new Error(`Error adding expense: ${responseText}`);
   }
-
   const data = JSON.parse(responseText);
   return data.id;
-}
+};

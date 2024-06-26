@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocs from "./swagger/swaggerOptions.js";
 import routes from "./routes/index.js";
-import { startTelegramBot } from "./telegram/index.js";
+import { startTelegramBot } from "./telegram/startTelegramBot.js";
 
 dotenv.config();
 
