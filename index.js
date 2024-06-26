@@ -11,7 +11,7 @@ import {
 } from "./telegram/addReservation.js";
 import { handleAddOksana, handleOksanaMessage } from "./telegram/addOksana.js";
 import { handleFetchCheckInData } from "./telegram/fetchCheckInData.js";
-
+import routes from "./routes/index.js";
 dotenv.config();
 
 const app = express();
@@ -105,6 +105,8 @@ bot.onText(/\/checkin/, async (msg) => {
 
 const webhookUrl = `${process.env.VERCEL_DEPLOYMENT_URL}/bot${process.env.TELEGRAM_API_KEY}`;
 bot.setWebHook(webhookUrl);
+
+app.use("/api", routes);
 
 app.post(`/bot${process.env.TELEGRAM_API_KEY}`, (req, res) => {
   bot.processUpdate(req.body);
