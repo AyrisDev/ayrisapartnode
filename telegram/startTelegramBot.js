@@ -14,6 +14,7 @@ const bot = new TelegramBot(process.env.TELEGRAM_API_KEY, { polling: true });
 const sessions = {};
 
 export const startTelegramBot = () => {
+  const webhookUrl = process.env.VERCEL_DEPLOYMENT_URL;
   bot.onText(/\/expenses/, (msg) => {
     const chatId = msg.chat.id;
     handleAddExpenses(bot, chatId);
@@ -102,7 +103,5 @@ export const startTelegramBot = () => {
     handleFetchCheckInData(bot, chatId);
   });
 
-  bot.setWebHook(
-    `${process.env.VERCEL_DEPLOYMENT_URL}/bot${process.env.TELEGRAM_API_KEY}`
-  );
+  bot.setWebHook(`${webhookUrl}/bot${process.env.TELEGRAM_API_KEY}`);
 };
