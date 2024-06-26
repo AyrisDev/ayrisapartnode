@@ -11,10 +11,10 @@ import { handleFetchCheckInData } from "./fetchCheckInData.js";
 dotenv.config();
 
 const bot = new TelegramBot(process.env.TELEGRAM_API_KEY, { polling: true });
-const sessions = {};
 
 export const startTelegramBot = () => {
   const webhookUrl = process.env.VERCEL_DEPLOYMENT_URL;
+  bot.setWebHook(`${webhookUrl}/bot${process.env.TELEGRAM_API_KEY}`);
   bot.onText(/\/expenses/, (msg) => {
     const chatId = msg.chat.id;
     handleAddExpenses(bot, chatId);
@@ -102,6 +102,4 @@ export const startTelegramBot = () => {
     const chatId = msg.chat.id;
     handleFetchCheckInData(bot, chatId);
   });
-
-  bot.setWebHook(`${webhookUrl}/bot${process.env.TELEGRAM_API_KEY}`);
 };
