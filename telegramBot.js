@@ -92,6 +92,7 @@ bot.onText(/\/help/, (msg) => {
   /checkdate - Check available dates for rooms
   /persons - Get the list of persons
   /addreservation - Add a new reservation
+  /expenses - Add a new expenses
   `;
   bot.sendMessage(msg.chat.id, helpMessage);
 });
