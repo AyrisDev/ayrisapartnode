@@ -17,7 +17,7 @@ dotenv.config();
 const app = express();
 const bot = new TelegramBot(process.env.TELEGRAM_API_KEY, { polling: false });
 const sessions = {};
-
+const url = process.env.VERCEL_DEPLOYMENT_URL;
 app.use(express.json());
 
 bot.onText(/\/expenses/, (msg) => {
@@ -53,7 +53,7 @@ bot.onText(/\/help/, (msg) => {
 
 bot.onText(/\/rooms/, async (msg) => {
   try {
-    const response = await fetch("http://localhost:3000/api/rooms");
+    const response = await fetch(`${url}/api/rooms`);
     const data = await response.json();
     bot.sendMessage(msg.chat.id, JSON.stringify(data, null, 2));
   } catch (error) {
@@ -63,7 +63,7 @@ bot.onText(/\/rooms/, async (msg) => {
 
 bot.onText(/\/checkdate/, async (msg) => {
   try {
-    const response = await fetch("http://localhost:3000/api/checkdate");
+    const response = await fetch(`${url}/api/checkdate`);
     const data = await response.json();
     let message = "Available Dates:\n\n";
     for (const [room, dates] of Object.entries(data)) {
@@ -80,7 +80,7 @@ bot.onText(/\/checkdate/, async (msg) => {
 
 bot.onText(/\/persons/, async (msg) => {
   try {
-    const response = await fetch("http://localhost:3000/api/persons");
+    const response = await fetch(`${url}/api/persons`);
     const data = await response.json();
     bot.sendMessage(msg.chat.id, JSON.stringify(data, null, 2));
   } catch (error) {
